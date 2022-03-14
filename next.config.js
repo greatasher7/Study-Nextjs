@@ -1,7 +1,11 @@
+/**
+ * @type {import('next').NextConfig}
+ **/
+
 // const API_KEY = process.env.API_KEY;
 const API_KEY = "2aba01b0fce18e86ed1cee2e83403b06";
 
-module.exports = {
+const nextConfig = {
   reactStrictMode: true,
   async redirects() {
     return [
@@ -25,3 +29,5 @@ module.exports = {
     ];
   },
 };
+
+module.exports = nextConfig;

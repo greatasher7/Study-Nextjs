@@ -1,6 +1,6 @@
 import Seo from "../components/Seo";
 
-export default function About() {
+const About = () => {
   return (
     <>
       <Seo title="About - Next js" />
@@ -8,4 +8,6 @@ export default function About() {
       <style jsx>{``}</style>
     </>
   );
-}
+};
+
+export default About;

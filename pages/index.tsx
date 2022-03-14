@@ -1,21 +1,28 @@
-import { useRouter } from "next/router";
 import Seo from "../components/Seo";
+import { useRouter } from "next/router";
+import { IMovie } from "../type/interface";
+import { GetServerSideProps } from "next";
+import axios from "axios";
 
-export default function Home({ movies }) {
+interface IHomeProps {
+  movies: IMovie[];
+}
+
+const Home = ({ movies }: IHomeProps) => {
   const router = useRouter();
 
-  const onClick = (id, title) => {
+  const onClick = (id: number, title: string) => {
     router.push(`/movies/${title}/${id}`);
   };
 
   console.log(movies);
-
   return (
     <>
       <Seo title="Home - Next js" />
       <h1>Home</h1>
+
       <section>
-        {movies.map((movie) => (
+        {movies.map((movie: IMovie) => (
           <div
             className="movie_box"
             key={movie.id}
@@ -28,7 +35,7 @@ export default function Home({ movies }) {
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
               alt="poster image"
             />
-            <h4>{movie.original_title}</h4>
+            <h4>{movie.title}</h4>
           </div>
         ))}
       </section>
@@ -51,18 +58,21 @@ export default function Home({ movies }) {
       `}</style>
     </>
   );
-}
+};
 
-// 서버에서 해당 함수를 실행 후, 최초 html에 넣어서 보내줌 (React 전)
-// 백엔드 서버에서 처리
-export async function getServerSideProps() {
-  const { results: movies } = await (
-    await fetch("http://localhost:3000/api/movie")
-  ).json();
+export default Home;
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const {
+    data: { results: movies },
+  } = await axios({
+    method: "get",
+    url: "http://localhost:3000/api/movie",
+  });
 
   return {
     props: {
       movies,
     },
   };
-}
+};
